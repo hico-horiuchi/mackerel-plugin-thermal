@@ -26,7 +26,7 @@ mkr plugin install buty4649/mackerel-plugin-thermal
 
 ```
 [plugin.metrics.thermal]
-command = "/usr/bin/mackerel-plugin-thermal
+command = "/opt/mackerel-agent/plugins/bin/mackerel-plugin-thermal"
 ```
 
 ## Author
