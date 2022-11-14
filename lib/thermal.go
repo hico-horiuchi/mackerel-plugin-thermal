@@ -2,8 +2,11 @@ package mpthermal
 
 import (
 	"flag"
+	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 
@@ -66,7 +69,18 @@ func (t ThermalPlugin) FetchMetrics() (map[string]float64, error) {
 
 func Do() {
 	optPrefix := flag.String("metric-key-prefix", "thermal", "Metric key prefix")
+	optVersion := flag.Bool("version", false, "Show version")
 	flag.Parse()
+
+	if *optVersion {
+		fmt.Printf(`Version: mackerel-plugin-thermal %s
+Compiler: %s %s
+`,
+			VERSION,
+			runtime.Compiler,
+			runtime.Version())
+		os.Exit(0)
+	}
 
 	mp.NewMackerelPlugin(&ThermalPlugin{
 		prefix: *optPrefix,

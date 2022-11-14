@@ -1,11 +1,11 @@
 #!/bin/bash
 
-VERSION=1.0.0
-GOLANG_VERSION=1.16.6
+VERSION=$(awk '/VERSION/{gsub(/"/,"");print $NF}' lib/version.go)
+GOLANG_VERSION=1.19.3
 NAME=mackerel-plugin-thermal
 
 docker run -i --rm -v $(pwd):/usr/src/$NAME -w /usr/src/$NAME golang:$GOLANG_VERSION bash <<EOS
-go get -v -u github.com/Songmu/goxz/cmd/goxz
+go install github.com/Songmu/goxz/cmd/goxz@latest
 go mod tidy
-goxz -d dist/v${VERSION} -z -os linux -arch amd64,arm64
+goxz -pv $VERSION -z -os linux -arch amd64,arm64
 EOS
