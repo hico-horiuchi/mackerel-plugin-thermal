@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GOLANG_VERSION=1.19.3
+GOLANG_VERSION=1.23.1
 NAME=mackerel-plugin-thermal
 
 docker run -i --rm -v $(pwd):/usr/src/$NAME -w /usr/src/$NAME golang:$GOLANG_VERSION bash <<EOS
