@@ -19,7 +19,7 @@ thermal.gpu.temp        44.444000       1628155592
 ## Install
 
 ```
-mkr plugin install buty4649/mackerel-plugin-thermal
+mkr plugin install hico-horiuchi/mackerel-plugin-thermal
 ```
 
 ## Add mackerel-agent.conf

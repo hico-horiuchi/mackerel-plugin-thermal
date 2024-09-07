@@ -1,6 +1,6 @@
 package main
 
-import "github.com/buty4649/mackerel-plugin-thermal/lib"
+import "github.com/hico-horiuchi/mackerel-plugin-thermal/lib"
 
 func main() {
 	mpthermal.Do()
