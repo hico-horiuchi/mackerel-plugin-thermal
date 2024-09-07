@@ -8,4 +8,4 @@ go install github.com/tcnksm/ghr@latest
 go mod tidy
 
 goxz -d dist/${RELEASE_TAG} -z -os linux -arch amd64,arm64
-ghr -u hico-horiuchi -r mackerel-plugin-thermal ${RELEASE_TAG} dist/${RELEASE_TAG}
+ghr -u hico-horiuchi -r mackerel-plugin-thermal -n ${RELEASE_TAG} ${RELEASE_TAG} dist/${RELEASE_TAG}
