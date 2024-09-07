@@ -1,10 +1,11 @@
 #!/bin/bash
 
-GOLANG_VERSION=1.19.3
-NAME=mackerel-plugin-thermal
+set -eu -o pipefail
 
-docker run -i --rm -v $(pwd):/usr/src/$NAME -w /usr/src/$NAME golang:$GOLANG_VERSION bash <<EOS
 go install github.com/Songmu/goxz/cmd/goxz@latest
+go install github.com/tcnksm/ghr@latest
+
 go mod tidy
-goxz -z -os linux -arch amd64,arm64
-EOS
+
+goxz -d dist/${RELEASE_TAG} -z -os linux -arch amd64,arm64
+ghr -u buty4649 -r mackerel-plugin-thermal ${RELEASE_TAG} dist/${RELEASE_TAG}
