@@ -1,0 +1,21 @@
+name: Build
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+      # https://github.com/actions/setup-go
+      - uses: actions/setup-go@v5
+        with:
+          check-latest: true
+          go-version-file: go.mod
+      - name: build
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          RELEASE_TAG:  ${{ github.ref_name }}
+        run: ./build.sh
