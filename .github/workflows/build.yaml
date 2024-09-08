@@ -43,5 +43,5 @@ jobs:
         if: ${{ steps.tag.outputs.tag == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          RELEASE_TAG:  ${{ github.ref_name }}
+          RELEASE_TAG:  ${{ steps.version.outputs.version }}
         run: ./build.sh
