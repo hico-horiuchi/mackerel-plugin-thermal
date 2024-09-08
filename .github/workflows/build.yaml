@@ -1,20 +1,46 @@
 name: Build
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: configure git
+        run: |
+          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config --local user.name "${GITHUB_ACTOR}"
+      - name: set version
+        id: version
+        run: |
+          version=$(cat lib/version.go | grep VERSION | sed 's/[^0-9.]//g')
+          echo "version=v${version}" >> "${GITHUB_OUTPUT}"
+      - name: create tag
+        id: tag
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          ret=0 && git tag | grep ${VERSION} || ret=${?}
+          if [[ ${ret} -ne 0 ]]; then
+            git tag ${VERSION} ${GITHUB_SHA}
+            git push --tags
+            echo "tag=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "tag=false" >> "${GITHUB_OUTPUT}"
+          fi
       # https://github.com/actions/setup-go
       - uses: actions/setup-go@v5
+        if: ${{ steps.tag.outputs.tag == 'true' }}
         with:
           check-latest: true
           go-version-file: go.mod
       - name: build
+        if: ${{ steps.tag.outputs.tag == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           RELEASE_TAG:  ${{ github.ref_name }}
