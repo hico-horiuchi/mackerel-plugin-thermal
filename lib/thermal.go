@@ -53,7 +53,11 @@ func (t ThermalPlugin) FetchMetrics() (map[string]float64, error) {
 
 		temperature, err := ioutil.ReadFile(filepath.Join(file, "temp"))
 		if err != nil {
-			return nil, err
+			if strings.Contains(err.Error(), "no data available") {
+				continue
+			} else {
+				return nil, err
+			}
 		}
 		temp, err := strconv.ParseFloat(strings.TrimRight(string(temperature), "\n"), 64)
 		if err != nil {
